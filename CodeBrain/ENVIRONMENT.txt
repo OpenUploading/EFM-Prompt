@@ -1,0 +1,5 @@
+model=CodeBrain
+conda_environment=codebrain-bcic2a
+python=3.11.15
+package_count=81
+source_environment=D:\miniconda\envs\codebrain-bcic2a

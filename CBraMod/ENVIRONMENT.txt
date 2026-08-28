@@ -1,0 +1,5 @@
+model=CBraMod
+conda_environment=cbramod_env
+python=3.9.25
+package_count=55
+source_environment=D:\miniconda\envs\cbramod_env

@@ -1,0 +1,5 @@
+model=DAMFNet
+conda_environment=csbrain-bcic2a
+python=3.10.20
+package_count=44
+source_environment=D:\miniconda\envs\csbrain-bcic2a

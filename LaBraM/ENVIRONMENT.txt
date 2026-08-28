@@ -1,0 +1,5 @@
+model=LaBraM
+conda_environment=LaBraM
+python=3.11.15
+package_count=60
+source_environment=D:\miniconda\envs\LaBraM

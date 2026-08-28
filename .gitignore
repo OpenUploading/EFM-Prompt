@@ -1,0 +1,72 @@
+# IDE and Python caches
+.idea/
+.vscode/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Local environments and secrets
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+env/
+
+# Raw/processed neuroimaging data and array caches
+*.edf
+*.bdf
+*.set
+*.fdt
+*.mat
+*.npy
+*.npz
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.hdf5
+*.snirf
+*.nirs
+*.parquet
+*.feather
+
+# Model weights and checkpoints
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+**/pretrained_weights/
+**/weights/
+**/checkpoints/
+
+# Generated experiment artifacts
+**/runs/
+**/runs_*/
+**/results_*/
+**/batch_logs/
+**/cache/
+**/cache_*/
+**/outputs/
+**/logs/
+*.log
+*.db
+
+# Accidental Windows/system mirrors and temporary files
+**/%SystemDrive%/
+Thumbs.db
+Desktop.ini
+*.tmp
+*.bak
+*.swp
+
+# Archives are distribution artifacts, not source
+*.zip
+*.rar
+*.7z
+*.tar
+*.tar.gz
+

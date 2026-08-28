@@ -1,0 +1,61 @@
+{
+  "generated": "2026-07-27",
+  "models": {
+    "LaBraM": {
+      "conda_environment": "LaBraM",
+      "python": "3.11.15",
+      "requirements": "LaBraM/requirements.txt",
+      "package_count": 60
+    },
+    "CBraMod": {
+      "conda_environment": "cbramod_env",
+      "python": "3.9.25",
+      "requirements": "CBraMod/requirements.txt",
+      "package_count": 55
+    },
+    "CodeBrain": {
+      "conda_environment": "codebrain-bcic2a",
+      "python": "3.11.15",
+      "requirements": "CodeBrain/requirements.txt",
+      "package_count": 81
+    },
+    "CSBrain": {
+      "conda_environment": "csbrain-bcic2a",
+      "python": "3.10.20",
+      "requirements": "CSBrain/requirements.txt",
+      "package_count": 44
+    },
+    "fNIRS-Transformer": {
+      "conda_environment": "codebrain-bcic2a",
+      "python": "3.11.15",
+      "requirements": "fNIRS-Transformer/requirements.txt",
+      "package_count": 81
+    },
+    "EEGNet": {
+      "conda_environment": "csbrain-bcic2a",
+      "python": "3.10.20",
+      "requirements": "EEGNet/requirements.txt",
+      "package_count": 44
+    },
+    "DAMFNet": {
+      "conda_environment": "csbrain-bcic2a",
+      "python": "3.10.20",
+      "requirements": "DAMFNet/requirements.txt",
+      "package_count": 44
+    }
+  },
+  "datasets": {
+    "HYGRIP": {
+      "common_files": "HYGRIP",
+      "models": [
+        "EEGNet",
+        "DAMFNet",
+        "fNIRS-Transformer",
+        "CBraMod",
+        "CodeBrain",
+        "CSBrain"
+      ],
+      "integrated": "2026-08-28"
+    }
+  }
+}

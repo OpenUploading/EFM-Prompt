@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SHIN 各模型分类头总结</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --paper: #ffffff;
+      --ink: #172033;
+      --muted: #667085;
+      --line: #dbe3ef;
+      --blue: #275efe;
+      --blue-soft: #edf3ff;
+      --green: #087a55;
+      --green-soft: #eaf8f2;
+      --amber: #9a6700;
+      --amber-soft: #fff7df;
+      --shadow: 0 12px 32px rgba(23, 32, 51, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 8% 0%, #e7efff 0, transparent 28rem),
+        var(--bg);
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+      line-height: 1.65;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 40px));
+      margin: 40px auto 72px;
+    }
+
+    header {
+      padding: 40px 44px;
+      border-radius: 22px;
+      color: white;
+      background: linear-gradient(130deg, #17357a, #275efe 70%, #6488ff);
+      box-shadow: var(--shadow);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 44px);
+      letter-spacing: 0.02em;
+    }
+
+    header p {
+      max-width: 860px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 16px;
+    }
+
+    .scope {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 6px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      font-size: 13px;
+    }
+
+    section {
+      margin-top: 24px;
+      padding: 30px;
+      border: 1px solid rgba(219, 227, 239, 0.9);
+      border-radius: 18px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: 23px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .summary-card {
+      padding: 18px;
+      border-radius: 14px;
+      background: var(--blue-soft);
+    }
+
+    .summary-card:nth-child(2) { background: var(--green-soft); }
+    .summary-card:nth-child(3) { background: var(--amber-soft); }
+
+    .summary-card strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 18px;
+    }
+
+    .summary-card p {
+      margin: 0;
+      color: #48556b;
+      font-size: 14px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 990px;
+      border-collapse: collapse;
+      background: white;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 14px 15px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: #344054;
+      background: #f8faff;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: #fbfcff; }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #17357a;
+      background: #edf3ff;
+      font-family: Consolas, "Cascadia Code", monospace;
+      font-size: 0.92em;
+      overflow-wrap: anywhere;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      color: var(--green);
+      background: var(--green-soft);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .tag.mlp {
+      color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout {
+      margin-top: 18px;
+      padding: 17px 19px;
+      border-left: 4px solid var(--blue);
+      border-radius: 0 12px 12px 0;
+      background: var(--blue-soft);
+    }
+
+    .callout p { margin: 0; }
+
+    .model-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .model-card {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    .model-card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .flow {
+      margin: 10px 0 0;
+      color: #344054;
+      font-family: Consolas, "Microsoft YaHei", monospace;
+      font-size: 13px;
+    }
+
+    ul {
+      margin: 10px 0 0;
+      padding-left: 22px;
+    }
+
+    li + li { margin-top: 7px; }
+
+    .paths {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .paths a {
+      color: #315dc6;
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+
+    .paths a:hover { text-decoration: underline; }
+
+    footer {
+      margin-top: 22px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    @media (max-width: 820px) {
+      main { width: min(100% - 24px, 1180px); margin-top: 18px; }
+      header { padding: 28px 24px; }
+      section { padding: 22px 18px; }
+      .summary-grid, .model-grid { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body { background: white; }
+      main { width: 100%; margin: 0; }
+      header, section { box-shadow: none; break-inside: avoid; }
+      section { margin-top: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>SHIN 各模型分类头总结</h1>
+      <p>
+        本文按本地代码与各项目官方下游实现整理 CodeBrain、LaBraM、CBraMod、
+        官方 CSBrain、EEGNet、fNIRS-Transformer 与 DAMFNet 的分类头。
+      </p>
+      <span class="scope">范围：当前正式采用并纳入结果比较的模型版本</span>
+    </header>
+
+    <section>
+      <h2>核心结论</h2>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <strong>已对齐官方实现</strong>
+          <p>七个模型均采用各自官方库给出的下游分类头，只把最终类别数适配为 SHIN 二分类。</p>
+        </div>
+        <div class="summary-card">
+          <strong>结构不强行统一</strong>
+          <p>各官方模型采用不同的聚合方式、隐藏层和正则化；保留差异才能维持官方模型定义。</p>
+        </div>
+        <div class="summary-card">
+          <strong>未启用通用兜底头</strong>
+          <p>所有官方库均提供分类头，因此没有模型使用“展平 → LayerNorm → 自定义三层 MLP”。</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>分类头总表</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>模型</th>
+              <th>进入分类头前的处理</th>
+              <th>分类头结构</th>
+              <th>类别</th>
+              <th>备注</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>CodeBrain</strong></td>
+              <td><code>[B,30,10,200]</code> 全部展平为 60000 维</td>
+              <td>
+                <code>Linear(60000,2000) → ELU → Dropout(0.1) →<br>
+                Linear(2000,200) → ELU → Dropout(0.1) → Linear(200,2)</code>
+              </td>
+              <td><span class="tag mlp">官方三层 MLP</span></td>
+              <td>遵循 CodeBrain 官方下游模型的 <code>C×P×200 → P×200 → 200 → classes</code> 规则</td>
+            </tr>
+            <tr>
+              <td><strong>LaBraM</strong></td>
+              <td>对 token 表示做 mean pooling，得到 200 维</td>
+              <td><code>Linear(200,2)</code></td>
+              <td><span class="tag">单层线性头</span></td>
+              <td>分类头最小，主要依赖骨干表征</td>
+            </tr>
+            <tr>
+              <td><strong>CBraMod</strong></td>
+              <td><code>[B,30,10,200]</code> 全部展平为 60000 维</td>
+              <td>
+                <code>Linear(60000,2000) → ELU → Dropout(0.1) →<br>
+                Linear(2000,200) → ELU → Dropout(0.1) → Linear(200,2)</code>
+              </td>
+              <td><span class="tag mlp">官方 all_patch_reps</span></td>
+              <td>已从一层版本切换为官方默认三层分类器</td>
+            </tr>
+            <tr>
+              <td><strong>官方 CSBrain</strong></td>
+              <td><code>[B,30,10,200]</code> 全部展平为 60000 维</td>
+              <td>
+                <code>Linear(60000,2000) → ELU → Dropout →<br>
+                Linear(2000,200) → ELU → Dropout → Linear(200,2)</code>
+              </td>
+              <td><span class="tag mlp">三层 MLP</span></td>
+              <td>第一层约 1.2 亿个权重，容量和过拟合风险都较高</td>
+            </tr>
+            <tr>
+              <td><strong>EEGNet</strong></td>
+              <td>卷积与两次平均池化后得到 <code>[B,16,1,62]</code>，展平为 992 维</td>
+              <td><code>Linear(992,2)</code></td>
+              <td><span class="tag">原生线性头</span></td>
+              <td>分类器权重带 max-norm 0.25 约束</td>
+            </tr>
+            <tr>
+              <td><strong>fNIRS-Transformer</strong></td>
+              <td>两路 Transformer 各产生 64 维表示，拼接为 128 维</td>
+              <td><code>LayerNorm(128) → Linear(128,2)</code></td>
+              <td><span class="tag">单层线性头</span></td>
+              <td>“mlp_head”名称下实际没有隐藏层</td>
+            </tr>
+            <tr>
+              <td><strong>DAMFNet</strong><br>EEG 辅助头</td>
+              <td><code>[B,64,37,4]</code> 展平为 9472 维</td>
+              <td><code>Linear(9472,1024) → Sigmoid → Dropout → Linear(1024,2)</code></td>
+              <td><span class="tag mlp">辅助 MLP</span></td>
+              <td>训练时参与损失，测试时不单独决定最终类别</td>
+            </tr>
+            <tr>
+              <td><strong>DAMFNet</strong><br>HbR 辅助头</td>
+              <td><code>[B,64,7,12]</code> 展平为 5376 维</td>
+              <td><code>Linear(5376,1024) → Sigmoid → Dropout → Linear(1024,2)</code></td>
+              <td><span class="tag mlp">辅助 MLP</span></td>
+              <td>当前 DAMFNet fNIRS 分支使用 HbR，不包含 HbO</td>
+            </tr>
+            <tr>
+              <td><strong>DAMFNet</strong><br>融合主头</td>
+              <td><code>[B,256,30,4]</code> 展平为 30720 维</td>
+              <td>
+                <code>Linear(30720,2048) → Sigmoid → Dropout →<br>
+                Linear(2048,1024) → Linear(1024,2)</code>
+              </td>
+              <td><span class="tag mlp">融合 MLP</span></td>
+              <td>验证和测试使用该融合头作为最终预测</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>DAMFNet 三个头如何共同训练</h2>
+      <div class="model-grid">
+        <div class="model-card">
+          <h3>训练阶段（官方多头监督）</h3>
+          <p class="flow">EEG logits ─┐<br>HbR logits ─┼─ 三个交叉熵相加并反向传播<br>融合 logits ─┘</p>
+          <p><code>L = L_EEG + L_HbR + L_fusion</code></p>
+        </div>
+        <div class="model-card">
+          <h3>验证和测试阶段</h3>
+          <p class="flow">EEG + HbR → 融合网络 → 融合主头 → 最终类别</p>
+          <p>两个辅助头用于训练约束，不与融合头投票；滑动窗口实验再对同一 trial 的窗口 logits 求平均。</p>
+        </div>
+      </div>
+      <div class="callout">
+        <p>
+          DAMFNet 的通道方案从“全部通道学习投影”改为固定 8 个 EEG / 24 个 fNIRS 通道，
+          以及后续调整时间窗、早停轮数，都没有改变上述三个分类头。
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>官方对齐后的比较边界</h2>
+      <ul>
+        <li><strong>可以统一描述的部分：</strong>全部是二分类，最终输出均为 <code>[B,2]</code> logits，训练目标为交叉熵。</li>
+        <li><strong>官方结构不统一：</strong>特征聚合方式、输入维度、分类头层数、激活函数、Dropout 和权重约束均由各官方项目决定。</li>
+        <li><strong>当前比较的正确名称：</strong>“各模型官方分类头结果”，不是严格的统一 linear probe。</li>
+        <li><strong>参数量风险：</strong>CodeBrain、CBraMod 和官方 CSBrain 的 SHIN 三层头均约有 1.204 亿参数；FP32 AdamW 仅分类头的权重、梯度和两组动量约占 1.79 GiB，还不含骨干与激活。</li>
+        <li><strong>不建议给 LaBraM 使用全 token 展平 MLP：</strong>官方已经通过 mean pooling 得到稳定的 200 维表示；全展平会绑定 token 数并大幅增加过拟合风险。</li>
+        <li><strong>不建议给 EEGNet 使用通用三层 MLP：</strong>它的紧凑线性层和 max-norm 约束是官方 EEGNet 正则化设计的一部分。</li>
+        <li><strong>不建议给 fNIRS-Transformer 使用全 token 展平：</strong>两个 Transformer 的 CLS/mean 表示已经完成聚合，展平所有 token 会令分类头依赖输入长度。</li>
+        <li><strong>DAMFNet 不应替换为单一通用头：</strong>EEG、HbR 辅助监督和融合主头共同构成官方多模态训练目标。</li>
+      </ul>
+    </section>
+
+    <section class="paths">
+      <h2>本地实现位置</h2>
+      <ul>
+        <li><a href="file:///C:/Users/liumy/Documents/Codex/2026-07-02/bcic-iv-2a-eeg-cuda-train/scripts/shin_linear_head.py">CodeBrain：shin_linear_head.py</a></li>
+        <li><a href="file:///C:/Users/liumy/Documents/Codex/2026-06-28/c-users-liumy-onedrive-eeg-fnirs-2/work/LaBraM-main/run_shin_finetune.py">LaBraM：run_shin_finetune.py</a></li>
+        <li><a href="file:///D:/CBraMod-main/CBraMod-main/run_shin_finetune.py">CBraMod：run_shin_finetune.py</a></li>
+        <li><a href="file:///C:/Users/liumy/Documents/Codex/2026-07-21/d-datasets-shin/work/CSBrain-official/run_shin_finetune.py">官方 CSBrain：run_shin_finetune.py</a></li>
+        <li><a href="file:///C:/Users/liumy/Documents/Codex/2026-07-21/d-datasets-shin/work/EEGNet-official/eegnet_pytorch.py">EEGNet：eegnet_pytorch.py</a></li>
+        <li><a href="file:///D:/fNIRS代码/fNIRS-Transformer/model.py">fNIRS-Transformer：model.py</a></li>
+        <li><a href="file:///C:/Users/liumy/Documents/Codex/2026-07-21/d-datasets-shin/work/DAMFNet-official/models/fusion_net.py">DAMFNet：fusion_net.py</a></li>
+      </ul>
+    </section>
+
+    <footer>整理日期：2026-07-27 · SHIN MI / MA 实验分类头说明</footer>
+  </main>
+</body>
+</html>
